@@ -11,6 +11,14 @@ screenHeight = 800
 
 def setupDriver(url: str):
     options = webdriver.FirefoxOptions()
+    options.headless = False
+    options.mobile_options = False
+    print(options)
+    driver = webdriver.Firefox(options=options)
+    wait = WebDriverWait(driver, 10)
+    driver.set_window_size(width=screenWidth, height= screenHeight)
+    driver.get(url)
+    return driver, wait
 
 def takeTitleScreenshot(driver, wait):
     driver.get(url)
