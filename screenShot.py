@@ -15,22 +15,32 @@ def setupDriver(url: str):
     options.mobile_options = False
     print(options)
     driver = webdriver.Firefox(options=options)
-    wait = WebDriverWait(driver, 100)
+    wait = WebDriverWait(driver, 10)
     driver.set_window_size(width=screenWidth, height= screenHeight)
     driver.get(url)
     return driver, wait
 
-def takeTitleScreenshot(filePrefix, driver, wait, id):
-    driver.get(url)
+def takeTitleScreenshot(driver, wait, id):
     handle = By.ID
     name = f"t3_{id}"
     element = wait.until(EC.presence_of_element_located((handle, name)))
     driver.execute_script("window.focus();")
-    ssName = f"{screenshotDir}/{handle}_{filePrefix}.png"
+    ssName = f"{screenshotDir}/{id}_post.png"
     file = open(ssName, "wb")
     file.write(element.screenshot_as_png)
     file.close()
-    driver.quit()
+
+def takeCommentScreenshot(driver, wait, id):
+    handle = By.CSS_SELECTOR
+    name = f'[thingid="t1_{id}"]'
+    element = wait.until(EC.presence_of_element_located((handle, name)))
+    driver.execute_script("window.focus();")
+    ssName = f'{screenshotDir}/{id}_comment.png'
+    file = open(ssName, "wb")
+    file.write(element.screenshot_as_png)
+    file.close()
+    driver.close()
 
 driver, wait = setupDriver(url)
-takeTitleScreenshot("test", driver, wait, "1az32dq")
+takeTitleScreenshot(driver, wait, "1az32dq")
+takeCommentScreenshot(driver, wait, "kryoee9")
