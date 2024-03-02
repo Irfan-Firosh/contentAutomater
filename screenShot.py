@@ -3,19 +3,29 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-url = "https://www.reddit.com/r/AskReddit/comments/1az32dq/what_did_everyone_have_25_years_ago_1999_that/"
 
 screenshotDir = "screenshots"
 screenWidth = 400
 screenHeight = 800
 
+def takeSS(url, post_id, comment_id, option: int):
+    try:
+        driver, wait = setupDriver(url)
+        if option==1:
+            takeTitleScreenshot(driver, wait, post_id)
+        elif option==2:
+            takeCommentScreenshot(driver, wait, comment_id)
+        driver.close()
+    except:
+        print('Failed for ss for post: ' + post_id + ' comment: ' + comment_id)
 def setupDriver(url: str):
     options = webdriver.FirefoxOptions()
     options.headless = False
     options.mobile_options = False
+    options.set_preference("dom.popup_maximum", 0)
     print(options)
     driver = webdriver.Firefox(options=options)
-    wait = WebDriverWait(driver, 10)
+    wait = WebDriverWait(driver, 15)
     driver.set_window_size(width=screenWidth, height= screenHeight)
     driver.get(url)
     return driver, wait
@@ -39,8 +49,15 @@ def takeCommentScreenshot(driver, wait, id):
     file = open(ssName, "wb")
     file.write(element.screenshot_as_png)
     file.close()
-    driver.close()
 
-driver, wait = setupDriver(url)
-takeTitleScreenshot(driver, wait, "1az32dq")
-takeCommentScreenshot(driver, wait, "kryoee9")
+def cancelLoginPopup(driver, wait):
+    try:
+        popup = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'[id="animated-container"]')))
+        #WebDriverWait(popup, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button[aria-label='No thanks']"))).click()
+        print(popup)
+        
+        #button = popup.find_element(By.TAG_NAME, "button")
+
+        #button.click()
+    except:
+        print("Login Popup does not exist")
