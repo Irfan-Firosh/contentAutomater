@@ -22,7 +22,7 @@ def setupDriver(url: str):
     options = webdriver.FirefoxOptions()
     options.headless = False
     options.mobile_options = False
-    options.set_preference("dom.popup_maximum", 0)
+    options.set_preference("privacy.popups.disable_from_plugins", 3)
     print(options)
     driver = webdriver.Firefox(options=options)
     wait = WebDriverWait(driver, 15)
