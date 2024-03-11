@@ -6,12 +6,13 @@ from selenium.common.exceptions import TimeoutException
 
 
 screenshotDir = "screenshots"
-screenWidth = 900
+screenWidth = 400
 screenHeight = 800
 
 def takeSS(url, post_id, comment_id, option: int):
     try:
         driver, wait = setupDriver(url)
+        cancelLoginPopup(driver)
         if option==1:
             takeTitleScreenshot(driver, wait, post_id)
         elif option==2:
@@ -29,7 +30,7 @@ def setupDriver(url: str):
     options.set_preference("dom.disable_open_during_load", False)
     print(options)
     driver = webdriver.Firefox(options=options)
-    wait = WebDriverWait(driver, 4)
+    wait = WebDriverWait(driver, 10)
     driver.set_window_size(width=screenWidth, height= screenHeight)
     driver.get(url)
     return driver, wait
@@ -46,13 +47,10 @@ def takeTitleScreenshot(driver, wait, id):
 
 def takeCommentScreenshot(driver, wait, id):
     try:
-        print("hi")
         handle = By.ID
         name = f't1_{id}'
-        print(name)
         element = wait.until(EC.presence_of_element_located((handle, name)))
     except TimeoutException:
-        print("hi")
         handle = By.CSS_SELECTOR
         name = f'[thingid="t1_{id}"]'
         element = wait.until(EC.presence_of_element_located((handle, name)))
@@ -62,15 +60,21 @@ def takeCommentScreenshot(driver, wait, id):
     file.write(element.screenshot_as_png)
     file.close()
 
-def cancelLoginPopup(driver, wait):
+def cancelLoginPopup(driver):
     try:
-        popup = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,'[id="animated-container"]')))
-        #WebDriverWait(popup, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button[aria-label='No thanks']"))).click()
-        print(popup)
+        iframes = driver.find_elements(By.TAG_NAME,'iframe')
+        popup = None
         
-        #button = popup.find_element(By.TAG_NAME, "button")
+        # Gets Last Frame
+        for iframe in reversed(iframes):
+            src = iframe.get_attribute('src')
+            if src:
+                popup = iframe
+                break
 
-        #button.click()
-    except:
-        print("Login Popup does not exist")
-
+        print(popup.get_attribute('src'))
+        driver.switch_to.frame(popup)
+        driver.find_element("xpath", '//div[@role="button"]').click()
+        driver.switch_to.default_content()
+    except Exception as e:
+        print("No Login Found")
