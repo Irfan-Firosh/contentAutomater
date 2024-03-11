@@ -2,10 +2,11 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 
 
 screenshotDir = "screenshots"
-screenWidth = 400
+screenWidth = 900
 screenHeight = 800
 
 def takeSS(url, post_id, comment_id, option: int):
@@ -17,15 +18,18 @@ def takeSS(url, post_id, comment_id, option: int):
             takeCommentScreenshot(driver, wait, comment_id)
         driver.close()
     except:
+        driver.close()
         print('Failed for ss for post: ' + post_id + ' comment: ' + comment_id)
 def setupDriver(url: str):
     options = webdriver.FirefoxOptions()
     options.headless = False
     options.mobile_options = False
-    options.set_preference("privacy.popups.disable_from_plugins", 3)
+    options.set_preference("dom.popup_maximum", 0)
+    options.set_preference("privacy.popups.showBrowserMessage", False)
+    options.set_preference("dom.disable_open_during_load", False)
     print(options)
     driver = webdriver.Firefox(options=options)
-    wait = WebDriverWait(driver, 15)
+    wait = WebDriverWait(driver, 4)
     driver.set_window_size(width=screenWidth, height= screenHeight)
     driver.get(url)
     return driver, wait
@@ -41,9 +45,17 @@ def takeTitleScreenshot(driver, wait, id):
     file.close()
 
 def takeCommentScreenshot(driver, wait, id):
-    handle = By.CSS_SELECTOR
-    name = f'[thingid="t1_{id}"]'
-    element = wait.until(EC.presence_of_element_located((handle, name)))
+    try:
+        print("hi")
+        handle = By.ID
+        name = f't1_{id}'
+        print(name)
+        element = wait.until(EC.presence_of_element_located((handle, name)))
+    except TimeoutException:
+        print("hi")
+        handle = By.CSS_SELECTOR
+        name = f'[thingid="t1_{id}"]'
+        element = wait.until(EC.presence_of_element_located((handle, name)))
     driver.execute_script("window.focus();")
     ssName = f'{screenshotDir}/{id}_comment.png'
     file = open(ssName, "wb")
@@ -61,3 +73,4 @@ def cancelLoginPopup(driver, wait):
         #button.click()
     except:
         print("Login Popup does not exist")
+
