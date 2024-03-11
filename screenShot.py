@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+import time
 
 
 screenshotDir = "screenshots"
@@ -13,6 +14,7 @@ def takeSS(url, post_id, comment_id, option: int):
     try:
         driver, wait = setupDriver(url)
         cancelLoginPopup(driver)
+        time.sleep(2)
         if option==1:
             takeTitleScreenshot(driver, wait, post_id)
         elif option==2:
