@@ -9,3 +9,9 @@ def createVoiceover(comment_id, inp, post_id):
     tts = gTTS(text=inp, lang='en')
     tts.save(path)
     return path
+
+def postVoiceover(post_id, inp):
+    path = f'{voiceoverDirectory}/post-{post_id}.mp3'
+    tts = gTTS(text=inp, lang='en')
+    tts.save(path)
+    return path
