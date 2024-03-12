@@ -5,6 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import NoSuchElementException
 import time
+import config
 
 
 screenshotDir = "screenshots"
@@ -18,8 +19,10 @@ def takeSS(url, post_id, comment_id, option: int):
         time.sleep(2)
         if option==1:
             takeTitleScreenshot(driver, wait, post_id)
+            config.success[post_id] = []
         elif option==2:
-            takeCommentScreenshot(driver, wait, comment_id)
+            takeCommentScreenshot(driver, wait, comment_id, post_id)
+            config.success[post_id].append(comment_id)
         driver.close()
     except:
         driver.close()
@@ -48,9 +51,10 @@ def takeTitleScreenshot(driver, wait, id):
         file.write(element.screenshot_as_png)
         file.close()
     except:
+        config.fails[id] = []
         print("Screenshot error post: " + id)
 
-def takeCommentScreenshot(driver, wait, id,):
+def takeCommentScreenshot(driver, wait, id, post_id):
     try:
         handle = By.ID
         name = f't1_{id}'
@@ -59,6 +63,11 @@ def takeCommentScreenshot(driver, wait, id,):
         handle = By.CSS_SELECTOR
         name = f'[thingid="t1_{id}"]'
         element = wait.until(EC.presence_of_element_located((handle, name)))
+    except:
+        if post_id not in config.fails.keys():
+            config.fails[post_id] = []
+        config.fails[post_id].append(id)
+        print("Screenshot error comment: " + id)
     driver.execute_script("window.focus();")
     ssName = f'{screenshotDir}/{id}_comment.png'
     file = open(ssName, "wb")
@@ -80,6 +89,6 @@ def cancelLoginPopup(driver):
         driver.find_element("xpath", '//div[@role="button"]').click()
         driver.switch_to.default_content()
     except NoSuchElementException:
-        print("No Login Found")
+        print("\nNo Login Found")
     except:
         print("Error with cancel login")
