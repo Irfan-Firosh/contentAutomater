@@ -21,7 +21,7 @@ def takeSS(url, post_id, comment_id, option: int):
             takeTitleScreenshot(driver, wait, post_id)
             config.success[post_id] = []
         elif option==2:
-            takeCommentScreenshot(driver, wait, comment_id, post_id)
+            takeCommentScreenshot(driver, wait, comment_id)
             config.success[post_id].append(comment_id)
         driver.close()
     except:
@@ -51,10 +51,10 @@ def takeTitleScreenshot(driver, wait, id):
         file.write(element.screenshot_as_png)
         file.close()
     except:
-        config.fails[id] = []
+        config.failPost.append(id)
         print("Screenshot error post: " + id)
 
-def takeCommentScreenshot(driver, wait, id, post_id):
+def takeCommentScreenshot(driver, wait, id):
     try:
         handle = By.ID
         name = f't1_{id}'
@@ -64,9 +64,7 @@ def takeCommentScreenshot(driver, wait, id, post_id):
         name = f'[thingid="t1_{id}"]'
         element = wait.until(EC.presence_of_element_located((handle, name)))
     except:
-        if post_id not in config.fails.keys():
-            config.fails[post_id] = []
-        config.fails[post_id].append(id)
+        config.failComment.append(id)
         print("Screenshot error comment: " + id)
     driver.execute_script("window.focus();")
     ssName = f'{screenshotDir}/{id}_comment.png'
