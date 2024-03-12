@@ -6,13 +6,14 @@ screenshotDir = "screenshots"
 voiceoverDirectory = "voiceovers"
 gameplayDirectory = "gameplays"
 finalVideoDirectory = "finalVideos"
+scaleFactor = 1.2 # Scaling Percent of Video
 
 def createClip(screenshot, voiceover):
     imageClip = ImageClip(screenshot)
     audioClip = AudioFileClip(filename=voiceover)
     imageClip = imageClip.set_duration(audioClip.duration)
     videoClip = imageClip.set_audio(audioClip)
-    videoClip = videoClip.resize(1.5)
+    videoClip = videoClip.resize(scaleFactor)
     return videoClip
 
 def compileClips(post_id, comment_ids):
@@ -58,4 +59,3 @@ def finalVideo(post_id, comment_ids):
     if os.path.exists(sspath) and os.path.exists(commentpath):
         return True
     return False """
-finalVideo("1bc44g0", ["kudbg8h", "kudgbcv", "kudgq1o"])
