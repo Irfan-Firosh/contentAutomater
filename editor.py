@@ -6,7 +6,7 @@ screenshotDir = "screenshots"
 voiceoverDirectory = "voiceovers"
 gameplayDirectory = "gameplays"
 finalVideoDirectory = "finalVideos"
-scaleFactor = 1.2 # Scaling Percent of Video
+scaleFactor = 1.3 # Scaling Percent of Video
 
 def createClip(screenshot, voiceover):
     imageClip = ImageClip(screenshot)
