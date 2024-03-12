@@ -13,11 +13,11 @@ def main():
     time.sleep(15)
     agent = "chrome:redditStatsMapper:v1.1.1 (by /u/Experimnet)"
     reddit = praw.Reddit(
-        client_id =config.client_id,
-        client_secret = config.client_secret,
-        password=config.password,
+        client_id =config.praw_client_id,
+        client_secret = config.praw_client_secret,
+        password=config.praw_password,
         user_agent=agent,
-        username=config.username,
+        username=config.praw_username,
     )
 
     path = "processedPosts.txt"
