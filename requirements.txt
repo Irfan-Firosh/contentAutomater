@@ -2,3 +2,7 @@ tqdm==4.66.2
 pyttsx3==2.90
 gTTS==2.5.1
 selenium==4.18.1
+google-api-python-client==2.121.0
+google-auth-oauthlib==1.2.0
+google-auth-httplib2==0.2.0
+moviepy==1.0.3
