@@ -1,6 +1,5 @@
 import os
 
-import http.client
 import httplib2
 from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
