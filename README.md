@@ -29,7 +29,7 @@ To get started with contentAutomater, first, ensure you have installed the requi
 pip install -r requirements.txt
 ```
 
-Make sure to have **folders for background gameplay, voiceovers, screenshots and final videos**
+**Make sure to have folders for background gameplay, voiceovers, screenshots and final videos. In addition to this include your relevant details in the config.py file as well**
 
 
 # License
