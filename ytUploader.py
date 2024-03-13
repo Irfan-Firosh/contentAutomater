@@ -8,7 +8,6 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 from google_auth_oauthlib.flow import InstalledAppFlow
-from oauth2client.tools import run_flow
 
 
 
@@ -61,8 +60,5 @@ def initalize_upload(file, options):
         response = insert_request.execute()
         return response
     except HttpError as e:
-        print(f"An HTTP error {e.resp.status} occurred:\n{e.content}")
+        print(f"An HTTP error {e.resp.status} for: " + file)
         return None
-
-import config
-initalize_upload("finalVideos/1bc6z75.mp4", config.youtube)
