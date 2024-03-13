@@ -1,11 +1,13 @@
 import praw
 import time
+import os
 from tqdm import tqdm
 from voiceOver import *
 from wifiConnector import *
 from screenShot import *
 from editor import *
 from clearDir import *
+from ytUploader import *
 import config
 
 def main():
@@ -38,6 +40,9 @@ def main():
 
     # Generating Video
     genVideo()
+
+    #Uploading Video
+    uploadVideos()
 
 def getExistingPostIDs(file_path) -> set:
     existingIDs = set()
@@ -104,8 +109,17 @@ def clearInventory():
     try:
         delSS()
         delVoiceovers()
+        delFinal()
     except:
         print("Error Clearing The File")
+
+def uploadVideos(): # Errors Regarding Disk Quota need to be fixed
+    for finalVid in os.listdir(finalDir):
+        path = os.path.join(finalDir, finalVid)
+        try:
+            initalize_upload(path, config.youtube)
+        except:
+            print("Upload error for: " + finalVid)
 
 clearInventory()
 main()
