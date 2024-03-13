@@ -18,12 +18,6 @@ cred_file = "token.json"
 
 httplib2.RETRIES = 1
 
-MAX_RETRIES = 10
-RETRIABLE_EXCEPTIONS = (httplib2.HttpLib2Error, IOError, http.client.NotConnected,
-  http.client.IncompleteRead, http.client.ImproperConnectionState,
-  http.client.CannotSendRequest, http.client.CannotSendHeader,
-  http.client.ResponseNotReady, http.client.BadStatusLine)
-RETRIABLE_STATUS_CODES = [500, 502, 503, 504]
 CLIENT_SECRET = 'yt_0Auth.json'
 SCOPES = ['https://www.googleapis.com/auth/youtube.upload']
 API_SERVICE_NAME = 'youtube'
