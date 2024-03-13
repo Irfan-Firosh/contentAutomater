@@ -13,12 +13,12 @@ import config
 def main():
     connect("PAL3.0")
     time.sleep(15)
-    agent = "chrome:redditStatsMapper:v1.1.1 (by /u/Experimnet)"
+    
     reddit = praw.Reddit(
         client_id =config.praw_client_id,
         client_secret = config.praw_client_secret,
         password=config.praw_password,
-        user_agent=agent,
+        user_agent=config.agent,
         username=config.praw_username,
     )
 
