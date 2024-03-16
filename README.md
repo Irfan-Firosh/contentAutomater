@@ -14,7 +14,7 @@ Content Automater is a versatile tool designed to streamline the content creatio
    - Uses the gTTs python library to generate an AI voiceover for the content in the post and comments.
 
 3. **Video Editing**
-    - Uses MoviePy to edit the screenshots together without a background video into a final product. The background video consists of gameplay which is overlayed by the screenshots.
+    - Uses MoviePy to edit the screenshots together with a background video into a final product. The background video consists of gameplay which is overlayed by the screenshots.
 
 4. **YouTube Upload**
     - Integrates with the YouTube Data API to upload the generated videos directly to your YouTube channel.
